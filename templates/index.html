@@ -34,13 +34,9 @@
         #status {
             margin-top: 20px;
         }
-        .progress {
-            background-color: #404040;
-            height: 10px;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            background-color: #1DB954;
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
         }
     </style>
 </head>
@@ -55,16 +51,16 @@
                            placeholder="https://open.spotify.com/playlist/..." required>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-spotify text-white">
+                    <button type="submit" class="btn btn-spotify text-white" id="downloadBtn">
                         Download Playlist
                     </button>
                 </div>
             </form>
-            <div id="status" class="d-none">
-                <div class="alert" role="alert"></div>
-                <div class="progress d-none">
-                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+            <div id="status" class="d-none text-center">
+                <div class="spinner-border loading-spinner text-success mb-3" role="status" id="loadingSpinner">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
+                <div class="alert" role="alert"></div>
             </div>
         </div>
     </div>
@@ -76,37 +72,59 @@
             
             const statusDiv = document.getElementById('status');
             const alert = statusDiv.querySelector('.alert');
-            const progress = statusDiv.querySelector('.progress');
-            const progressBar = progress.querySelector('.progress-bar');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const form = e.target;
             
+            // Show loading state
             statusDiv.classList.remove('d-none');
             alert.classList.remove('alert-success', 'alert-danger');
             alert.classList.add('alert-info');
             alert.textContent = 'Downloading playlist... This may take a while.';
-            progress.classList.remove('d-none');
+            downloadBtn.disabled = true;
+            loadingSpinner.classList.remove('d-none');
             
             try {
-                const formData = new FormData(e.target);
+                const formData = new FormData(form);
                 const response = await fetch('/download', {
                     method: 'POST',
                     body: formData
                 });
                 
-                const data = await response.json();
-                
-                if (data.status === 'success') {
+                if (response.ok) {
+                    // Get the blob from the response
+                    const blob = await response.blob();
+                    
+                    // Create a temporary link to download the file
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    const contentDisposition = response.headers.get('content-disposition');
+                    const fileName = contentDisposition ? 
+                        contentDisposition.split('filename=')[1].replace(/['"]/g, '') :
+                        'playlist.zip';
+                    
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                    
                     alert.classList.remove('alert-info');
                     alert.classList.add('alert-success');
-                    alert.textContent = data.message;
-                    progressBar.style.width = '100%';
+                    alert.textContent = 'Download complete! Check your downloads folder.';
                 } else {
+                    const data = await response.json();
                     throw new Error(data.message);
                 }
             } catch (error) {
                 alert.classList.remove('alert-info');
                 alert.classList.add('alert-danger');
                 alert.textContent = `Error: ${error.message}`;
-                progress.classList.add('d-none');
+            } finally {
+                downloadBtn.disabled = false;
+                loadingSpinner.classList.add('d-none');
+                form.reset();
             }
         });
     </script>

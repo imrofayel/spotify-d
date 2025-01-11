@@ -1,5 +1,3 @@
-print("Jami spotify playlist downloader")
-
 import os
 import spotipy
 from dotenv import load_dotenv
@@ -39,9 +37,14 @@ def search_and_download(song, artist, folder_name):
     """Search for the song on YouTube and download it as an MP3."""
     query = f"{song} {artist}"
     songs_dir = os.path.join('playlists', folder_name)
+    
+    # Clean the song name to be filesystem-friendly
+    safe_song_name = "".join(x for x in song if x.isalnum() or x in (' ', '-', '_')).strip()
+    output_path = os.path.join(songs_dir, f'{safe_song_name}.mp3')
+    
     options = {
         'format': 'bestaudio/best',
-        'outtmpl': f'{songs_dir}/{song}.%(ext)s',
+        'outtmpl': os.path.join(songs_dir, f'{safe_song_name}.%(ext)s'),
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -55,8 +58,10 @@ def search_and_download(song, artist, folder_name):
         try:
             ydl.download([f"ytsearch1:{query}"])
             print(f"Downloaded: {song}")
+            return output_path
         except Exception as e:
             print(f"Failed to download {song}: {e}")
+            return None
 
 def save_to_csv(songs, playlist_name):
     """Save the playlist details to a CSV file."""
