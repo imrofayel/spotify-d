@@ -31,6 +31,6 @@ It's open-source under **MIT**.
 
 *Here's the screenshot btw.*
 
-<img src="https://github.com/user-attachments/assets/0f2aa83c-e71d-4915-976c-b3de32474c6a" width="700px">
+<img src="https://github.com/user-attachments/assets/1d4ea66e-ddb3-4d50-9441-09eb0a866421" width="700px">
 
 
