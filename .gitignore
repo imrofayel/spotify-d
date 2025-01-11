@@ -5,3 +5,5 @@
 # Ignore all files in songs and csv directories
 playlists/
 csv/
+
+__pycache__

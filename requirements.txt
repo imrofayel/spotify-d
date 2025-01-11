@@ -1,0 +1,5 @@
+flask
+spotipy
+python-dotenv
+yt-dlp
+pandas
