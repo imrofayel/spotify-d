@@ -41,7 +41,7 @@
                         type="text" 
                         id="playlist_url" 
                         name="playlist_url" 
-                        class="w-full px-4 py-3 !bg-gray-50/70 rounded-3xl p-8 border border-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1ed760] focus:border-transparent"
+                        class="w-full px-4 py-3 focus:bg-gray-50/70 selection:bg-transparent !bg-gray-50/70 rounded-3xl p-8 border border-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1ed760] focus:border-transparent"
                         placeholder="https://open.spotify.com/playlist/..." 
                         required
                     >
@@ -65,7 +65,7 @@
                         <div class="w-12 h-12 border-4 border-[#1ed760] border-t-transparent rounded-full animate-spin"></div>
                     </div>
                 </div>
-                <div class="alert rounded-xl p-4 text-sm font-medium"></div>
+                <div id="alert" class="alert rounded-xl p-4 text-sm font-medium text-black/90"></div>
             </div>
         </div>
     </div>
@@ -75,15 +75,14 @@
             e.preventDefault();
             
             const statusDiv = document.getElementById('status');
-            const alert = statusDiv.querySelector('.alert');
+            const alert = document.getElementById('alert');
             const downloadBtn = document.getElementById('downloadBtn');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const form = e.target;
             
             // Show loading state
             statusDiv.classList.remove('hidden');
-            alert.classList.remove('bg-green-500', 'bg-red-500', 'bg-blue-500');
-            alert.classList.add('bg-gray-50 border-gray-200/50');
+            alert.className = 'text-[#fafafa] bg-black rounded-2xl py-3 border border-gray-200';
             alert.textContent = 'Downloading playlist... This may take a while.';
             downloadBtn.disabled = true;
             loadingSpinner.classList.remove('hidden');
@@ -111,16 +110,14 @@
                     window.URL.revokeObjectURL(url);
                     a.remove();
                     
-                    alert.classList.remove('bg-gray-50/60 border-gray-200/50');
-                    alert.classList.add('bg-green-50');
+                    alert.className = 'text-[#fafafa] bg-black rounded-2xl py-3 border border-gray-200';
                     alert.textContent = 'Download complete! Check your playlists folder.';
                 } else {
                     const data = await response.json();
                     throw new Error(data.message);
                 }
             } catch (error) {
-                alert.classList.remove('bg-blue-500', 'bg-opacity-20');
-                alert.classList.add('bg-red-500', 'bg-opacity-20');
+                alert.className = 'text-[#fafafa] bg-red-600 rounded-2xl py-3 border border-gray-200';
                 alert.textContent = `Error: ${error.message}`;
             } finally {
                 downloadBtn.disabled = false;
