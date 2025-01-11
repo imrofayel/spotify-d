@@ -38,15 +38,17 @@ def get_playlist_songs(playlist_url):
 def search_and_download(song, artist, folder_name):
     """Search for the song on YouTube and download it as an MP3."""
     query = f"{song} {artist}"
+    songs_dir = os.path.join('playlists', folder_name)
     options = {
         'format': 'bestaudio/best',
-        'outtmpl': f'{folder_name}/{song}.%(ext)s',
+        'outtmpl': f'{songs_dir}/{song}.%(ext)s',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '192',
+            'preferredquality': '320',
         }],
-        'quiet': True
+        'quiet': True,
+        'ffmpeg_location': r'C:\ffmpeg\bin'
     }
 
     with yt_dlp.YoutubeDL(options) as ydl:
@@ -58,17 +60,28 @@ def search_and_download(song, artist, folder_name):
 
 def save_to_csv(songs, playlist_name):
     """Save the playlist details to a CSV file."""
+    csv_dir = 'csv'
+    if not os.path.exists(csv_dir):
+        os.makedirs(csv_dir)
+    
     df = pd.DataFrame(songs)
-    df.to_csv(f"{playlist_name}.csv", index=False)
-    print(f"Saved playlist to {playlist_name}.csv")
+    csv_path = os.path.join(csv_dir, f"{playlist_name}.csv")
+    df.to_csv(csv_path, index=False)
+    print(f"Saved playlist to {csv_path}")
 
 def main():
+    # Create base directories if they don't exist
+    for dir_name in ['songs', 'csv']:
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+
     playlist_url = input("Enter Spotify Playlist URL: ")
     songs, playlist_name = get_playlist_songs(playlist_url)
 
-    # Create a folder for the playlist
-    if not os.path.exists(playlist_name):
-        os.mkdir(playlist_name)
+    # Create a folder for the playlist inside songs directory
+    songs_playlist_dir = os.path.join('songs', playlist_name)
+    if not os.path.exists(songs_playlist_dir):
+        os.makedirs(songs_playlist_dir)
 
     # Save playlist details to CSV
     save_to_csv(songs, playlist_name)
@@ -77,7 +90,7 @@ def main():
     for song in songs:
         search_and_download(song['name'], song['artist'], playlist_name)
 
-    print(f"All songs downloaded in folder: {playlist_name}")
+    print(f"All songs downloaded in folder: {songs_playlist_dir}")
 
 if __name__ == "__main__":
     main()
