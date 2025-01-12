@@ -4,19 +4,19 @@ just another spotify downloader.
 
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white">
 
-Bro, its just a `python (flask)` app. Here's basic guidelines which worked for me but if it these dont work for you then dont panic and fix it. You just need `Python` and `ffmpeg` to start.
+Bro, its just a `python (flask)` app. You just need `Python` and `ffmpeg` to start.
 
-1. Install **Python 3.x & pip**.
+1. Install **[Python 3.x](https://www.python.org/downloads/) & pip** *(comes with Python installer)*.
 
 2. Download [`ffmpeg-git-essentials.7z`](https://www.gyan.dev/ffmpeg/builds/) and extract the downloaded file in `C:\` and rename the extracted folder to `ffmpeg`. Add `C:\ffmpeg\bin` to your system's **PATH** (User variables) environment variable.
    
-3. **Clone** the repository and create a **virtual environment** (recommended)
+3. **Clone** the repository, open the folder in `VSCode` and create a **virtual environment** (recommended) using
    ```bash
    python -m venv venv
    ```
-   activate the **virtual environment**
+   activate the **virtual environment** by running
      ```bash
-     .\venv\Scripts\activate
+     .\venv\Scripts\activate.bat
      ```
      and install **dependencies** if any dependency isn't there, dont worry python 🐍 gonna tell you.
    ```bash
