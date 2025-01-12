@@ -27,6 +27,8 @@ Bro, its just a `python (flask)` app. Here's basic guidelines which worked for m
 
 5. **そうそう** you good to go. Run `python app.py` and listen without limits.
 
+⚠️ Dependencies could be outdated in `requirements.txt` so update these manually.
+
 It's open-source under **MIT**.
 
 *Here's the screenshot btw.*
