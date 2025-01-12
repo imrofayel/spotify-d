@@ -18,7 +18,7 @@ Bro, its just a `python (flask)` app. Here's basic guidelines which worked for m
      ```bash
      .\venv\Scripts\activate
      ```
-     and install **dependencies**
+     and install **dependencies** if any dependency isn't there, dont worry python 🐍 gonna tell you.
    ```bash
    pip install -r requirements.txt
    ```
