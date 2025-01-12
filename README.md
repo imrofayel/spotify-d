@@ -8,7 +8,7 @@ Bro, its just a `python (flask)` app. Here's basic guidelines which worked for m
 
 1. Install **Python 3.x & pip**.
 
-2. Download [`ffmpeg-git-essentials.7z`](https://www.gyan.dev/ffmpeg/builds/) and extract the downloaded file in `C:\` and rename the extracted folder to `ffmpeg`. Add `C:\ffmpeg\bin` to your system's **PATH** environment variable.
+2. Download [`ffmpeg-git-essentials.7z`](https://www.gyan.dev/ffmpeg/builds/) and extract the downloaded file in `C:\` and rename the extracted folder to `ffmpeg`. Add `C:\ffmpeg\bin` to your system's **PATH** (User variables) environment variable.
    
 3. **Clone** the repository and create a **virtual environment** (recommended)
    ```bash
@@ -26,6 +26,8 @@ Bro, its just a `python (flask)` app. Here's basic guidelines which worked for m
 4. Rename `.env.example` to `.env` and add [Spotify credentials](https://developer.spotify.com/dashboard/).
 
 5. **そうそう** you good to go. Run `python app.py` and listen without limits.
+
+⚠️ Dependencies could be outdated in `requirements.txt` so update these manually.
 
 It's open-source under **MIT**.
 
